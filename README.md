@@ -22,6 +22,16 @@ Each device gets a `tee` fan-out over named FIFOs in `/run/serial-bridge/<dev>/`
 
 **Why `fbtext`?** balenaOS boots with `console=null` and its VT layer does not render post-boot writes — text written to `/dev/tty1` silently goes nowhere (verified on balenaOS 9.0.3/rpi). The container therefore ships `src/fbtext.c`, a ~200-line PSF-font text renderer that mmaps `/dev/fb0` and draws the stream like a dumb terminal (scroll on newline, ANSI escapes stripped). It is compiled at image build time from the distro `gcc` — no prebuilt binaries.
 
+## The setup in pictures
+
+Hardware (Raspberry Pi 1 as console bridge, USB serial adapters):
+
+![serial-bridge hardware](images/serial-bridge-hardware.jpeg)
+
+Serial console of the attached device, as shown in the repo documentation:
+
+![serial console](images/serial-bridge-console.jpeg)
+
 ## Repository layout
 
 | Path | Purpose |

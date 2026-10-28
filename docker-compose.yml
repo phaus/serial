@@ -1,0 +1,33 @@
+version: "2"
+
+services:
+  serial-bridge:
+    build: ./serial-bridge
+    privileged: true # raw /dev access (ttyUSB*, tty1) — fine on a single-purpose Pi
+    restart: always
+    network_mode: host # SSH binds directly on the device IP
+    labels:
+      io.balena.features.udev: "1"
+    environment:
+      # Serial input
+      SERIAL_PORTS: "auto" # "auto" or comma-separated, e.g. "/dev/ttyUSB0,/dev/ttyUSB1"
+      SERIAL_BAUDRATE: "115200"
+      SCAN_INTERVAL: "10" # hotplug rescan, seconds
+
+      # HDMI output
+      HDMI_ENABLE: "true"
+      HDMI_TTY: "/dev/tty1"
+      HDMI_SANITIZE: "true" # strip non-printable control chars before writing to the console
+
+      # SSH access to the streams
+      SSH_ENABLE: "true"
+      SSH_PORT: "2222"
+      SSH_PASSWORD: "" # empty = pubkey only
+      SSH_PUBLIC_KEY: "" # OpenSSH public key for root
+
+      # Loki forwarding (empty LOKI_URL disables forwarding)
+      LOKI_URL: ""
+      LOKI_EXTERNAL_LABELS: ""
+      LOKI_BATCH_LINES: "100"
+      LOKI_BATCH_INTERVAL: "2"
+      # CONTAINER_NAME: ""  # optional override for the "{{.Name}}" label template

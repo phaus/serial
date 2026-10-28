@@ -1,0 +1,9 @@
+# Real configuration — never commit
+env.local
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*~
